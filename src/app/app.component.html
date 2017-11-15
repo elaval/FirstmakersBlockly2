@@ -1,20 +1,69 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-  <img width="300" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCAyNTAgMjUwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyNTAgMjUwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7ZmlsbDojREQwMDMxO30NCgkuc3Qxe2ZpbGw6I0MzMDAyRjt9DQoJLnN0MntmaWxsOiNGRkZGRkY7fQ0KPC9zdHlsZT4NCjxnPg0KCTxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMTI1LDMwIDEyNSwzMCAxMjUsMzAgMzEuOSw2My4yIDQ2LjEsMTg2LjMgMTI1LDIzMCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAJIi8+DQoJPHBvbHlnb24gY2xhc3M9InN0MSIgcG9pbnRzPSIxMjUsMzAgMTI1LDUyLjIgMTI1LDUyLjEgMTI1LDE1My40IDEyNSwxNTMuNCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAxMjUsMzAgCSIvPg0KCTxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0xMjUsNTIuMUw2Ni44LDE4Mi42aDBoMjEuN2gwbDExLjctMjkuMmg0OS40bDExLjcsMjkuMmgwaDIxLjdoMEwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMQ0KCQlMMTI1LDUyLjF6IE0xNDIsMTM1LjRIMTA4bDE3LTQwLjlMMTQyLDEzNS40eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
+<mat-toolbar>
+  <span>Firstmakers Blockly Client</span>
+</mat-toolbar>
+<mat-card>
+  <mat-form-field class="example-full-width">
+      <input matInput placeholder="Local IP address" [(ngModel)]="localIP" (change)="scanLocalNetwork(localIP)">
+  </mat-form-field>
+  {{checkingHost}}
+  <li *ngFor="let device of devices">{{device}}</li>
+</mat-card>
+
+<mat-card *ngIf="board">
+
+  <mat-card-title>
+      {{board.name}} {{board.currentState}}
+  </mat-card-title>
+  <mat-card-content *ngIf="board.isConnected">
+      <div fxLayout="row" fxLayoutWrap>
+
+              <div fxFlex="20"
+                fxLayout="row"
+                fxLayoutAlign="start center"
+                *ngFor="let pin of board.pins; index as pinNumber"
+                >
+              <!-- class="small col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                  <div fxFlex="15">
+                      <span class="md-title">{{pinLabel(board,pinNumber)}}</span>
+                  </div>
+                  <div fxFlex="35">
+                    <!--
+                      ng-if="controller.dataType(pin) == 'binary'" ng-model="pin.value" aria-label="Switch 1" ng-true-value="1" ng-false-value="0" ng-change="controller.setPinValue(boardName, $index, pin.value)">
+                    -->
+                          <mat-slide-toggle
+                            *ngIf="board.dataType(pin) == 'binary'"
+                            [(ngModel)]="pin.value"
+                            (change)="board.setPinValue(pinNumber, pin.value)"
+                          ></mat-slide-toggle>
+
+                          <mat-form-field *ngIf="board.dataType(pin) == 'number'" style="width:50px; margin:2px">
+                              <input matInput type="text" [ngModel]="pin.value" required>
+                          </mat-form-field>
+                  </div>
+                  <div fxFlex="50">
+
+                    <select
+                      name="singleSelect"
+                      [(ngModel)]="pin.mode"
+                      (change)="board.setPinMode(pinNumber, pin.mode)"
+                    >
+                      <option *ngFor="let mode of pin.supportedModes" [ngValue]="mode">{{board.getPinModeDesc(mode)}}</option>
+                    </select>
+
+                  </div>
+
+              </div>
+          </div>
+  </mat-card-content>
+</mat-card>
+<mat-card>
+    <button (click)="runCode()">Run code</button>
+    <button (click)="stopCode()">Stop code</button>
+</mat-card>
+<app-blockly></app-blockly>
+<div>
+  {{javascriptCode}}
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="https://blog.angular.io//">Angular blog</a></h2>
-  </li>
-</ul>
+
 
