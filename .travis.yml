@@ -15,7 +15,7 @@ before_script:
   - npm i
 
 script:
-  - ng build --env=prod --base-href /
+  - ng build --env=prod --base-href /firstmakersblockly2_development/
 
 deploy:
   provider: s3
