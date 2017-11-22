@@ -50,7 +50,9 @@ export class BlocklyComponent implements OnInit {
     // msgsEN();
     msgsES();
 
-    let code = Blockly.Xml.textToDom(startupScript);
+    const initialCode = localStorage.getItem('code') || startupScript;
+
+    let code = Blockly.Xml.textToDom(initialCode);
 
     // let code = document.getElementById('startBlocks');
 
@@ -76,15 +78,21 @@ export class BlocklyComponent implements OnInit {
 
           resolve(editor);
         });
-      })
+      });
 
 
 
     };
 
     const updateCode = () => {
+
       if (editor) {
-        this.blocklyService.newCodeJavascript(Blockly.JavaScript.workspaceToCode(editor));
+        const xml = Blockly.Xml.workspaceToDom(editor);
+        const xml_text = Blockly.Xml.domToText(xml);
+        localStorage.setItem('code', xml_text);
+
+        const jsCode = Blockly.JavaScript.workspaceToCode(editor);
+        this.blocklyService.newCodeJavascript(jsCode);
       }
       // document.getElementById('js').innerText = Blockly.JavaScript.workspaceToCode(editor);
       // document.getElementById('php').innerText = Blockly.PHP.workspaceToCode(editor);
