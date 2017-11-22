@@ -60,12 +60,16 @@ export class Board {
     });
 
     socket.on('data', data => {
-      if (data) {
+      if (data && this.pins) {
         const pinNumber = data.pin;
         const value = data.value;
 
         this.pins[pinNumber] = this.pins[pinNumber] || {};
         this.pins[pinNumber].value = value;
+      } else {
+        socket.emit('pins', (pins) => {
+          this.pins = pins;
+        });
       }
 
     });

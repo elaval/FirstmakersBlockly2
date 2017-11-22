@@ -10,62 +10,75 @@
   <li *ngFor="let device of devices">{{device}}</li>
 </mat-card>
 
-<mat-card *ngIf="board">
-  <mat-card-title>
-      {{board.name}} {{board.currentState}}
-  </mat-card-title>
+<div fxLayout="row" fxLayoutWrap>
+  <div fxFlex="60">
+    <mat-card>
+        <button (click)="runCode()">Run code</button>
+        <button (click)="stopCode()">Stop code</button>
+        <app-blockly></app-blockly>
+        <div>
+          {{javascriptCode}}
+        </div>
+    </mat-card>
 
-  <div *ngIf="board.pins && board.pins.length > 0">
-  <mat-card-content >
-      <div fxLayout="row" fxLayoutWrap *ngIf="board.pins">
-              <div fxFlex="20"
-                fxLayout="row"
-                fxLayoutAlign="start center"
-                *ngFor="let pin of board.pins; index as pinNumber"
-                >
-              <!-- class="small col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
-                  <div fxFlex="15">
-                      <span class="md-title">{{pinLabel(board,pinNumber)}}</span>
-                  </div>
-                  <div fxFlex="35">
-                    <!--
-                      ng-if="controller.dataType(pin) == 'binary'" ng-model="pin.value" aria-label="Switch 1" ng-true-value="1" ng-false-value="0" ng-change="controller.setPinValue(boardName, $index, pin.value)">
-                    -->
-                          <mat-slide-toggle
-                            *ngIf="board.dataType(pin) == 'binary'"
-                            [(ngModel)]="pin.value"
-                            (change)="board.setPinValue(pinNumber, pin.value)"
-                          ></mat-slide-toggle>
+  </div>
+  <div fxFlex="40">
+    <mat-card *ngIf="board">
+      <mat-card-title>
+          {{board.name}} {{board.currentState}}
+      </mat-card-title>
 
-                          <mat-form-field *ngIf="board.dataType(pin) == 'number'" style="width:50px; margin:2px">
-                              <input matInput type="text" [ngModel]="pin.value" required>
-                          </mat-form-field>
-                  </div>
-                  <div fxFlex="50">
-
-                    <select
-                      name="singleSelect"
-                      [(ngModel)]="pin.mode"
-                      (change)="board.setPinMode(pinNumber, pin.mode)"
+      <div *ngIf="board.pins && board.pins.length > 0">
+      <mat-card-content >
+          <div fxLayout="row" fxLayoutWrap *ngIf="board.pins">
+                  <div fxFlex="50"
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    *ngFor="let pin of board.pins; index as pinNumber"
                     >
-                      <option *ngFor="let mode of pin.supportedModes" [ngValue]="mode">{{board.getPinModeDesc(mode)}}</option>
-                    </select>
+                  <!-- class="small col-xs-3 col-sm-3 col-md-3 col-lg-3">-->
+                      <div fxFlex="15">
+                          <span class="md-title">{{pinLabel(board,pinNumber)}}</span>
+                      </div>
+                      <div fxFlex="35">
+                        <!--
+                          ng-if="controller.dataType(pin) == 'binary'" ng-model="pin.value" aria-label="Switch 1" ng-true-value="1" ng-false-value="0" ng-change="controller.setPinValue(boardName, $index, pin.value)">
+                        -->
+                              <mat-slide-toggle
+                                *ngIf="board.dataType(pin) == 'binary'"
+                                [(ngModel)]="pin.value"
+                                (change)="board.setPinValue(pinNumber, pin.value)"
+                              ></mat-slide-toggle>
+
+                              <mat-form-field *ngIf="board.dataType(pin) == 'number'" style="width:50px; margin:2px">
+                                  <input matInput type="text" [ngModel]="pin.value" required>
+                              </mat-form-field>
+                      </div>
+                      <div fxFlex="50">
+
+                        <select
+                          name="singleSelect"
+                          [(ngModel)]="pin.mode"
+                          (change)="board.setPinMode(pinNumber, pin.mode)"
+                        >
+                          <option *ngFor="let mode of pin.supportedModes" [ngValue]="mode">{{board.getPinModeDesc(mode)}}</option>
+                        </select>
+
+                      </div>
 
                   </div>
-
               </div>
-          </div>
-  </mat-card-content>
+      </mat-card-content>
+      </div>
+
+    </mat-card>
   </div>
 
-</mat-card>
-<mat-card>
-    <button (click)="runCode()">Run code</button>
-    <button (click)="stopCode()">Stop code</button>
-</mat-card>
-<app-blockly></app-blockly>
-<div>
-  {{javascriptCode}}
 </div>
+
+
+
+
+
 
 
