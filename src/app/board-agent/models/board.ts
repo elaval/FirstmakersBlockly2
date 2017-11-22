@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 const PIN_MODES = {
     0 : 'INPUT',
@@ -20,6 +21,9 @@ export class Board {
   analogPins: any;
   pins: any;
   name: any;
+  updateSubject = new BehaviorSubject(null);
+  update = this.updateSubject.asObservable();
+
   socket;
 
   constructor(boardName, socket) {
@@ -27,11 +31,13 @@ export class Board {
     this.socket = socket;
 
     socket.on('ready', (pins) => {
+      this.updateSubject.next(null);
       console.log(`BOARD READY: ${boardName}`);
     });
 
     socket.on('pins', pins => {
       this.pins = pins;
+      this.updateSubject.next(null);
       console.log(pins);
     });
 
@@ -64,8 +70,19 @@ export class Board {
 
     });
 
+    socket.on('disconnect', (d) => {
+      this.pins = null;
+      this.updateSubject.next(null);
+
+    });
+
     socket.on('state', state => {
       this.currentState = state;
+      if (state === 'disconnected') {
+        this.pins = null;
+        this.updateSubject.next(null);
+
+      }
     });
   }
 

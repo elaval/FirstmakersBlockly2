@@ -11,13 +11,13 @@
 </mat-card>
 
 <mat-card *ngIf="board">
-
   <mat-card-title>
       {{board.name}} {{board.currentState}}
   </mat-card-title>
-  <mat-card-content *ngIf="board.isConnected">
-      <div fxLayout="row" fxLayoutWrap>
 
+  <div *ngIf="board.pins && board.pins.length > 0">
+  <mat-card-content >
+      <div fxLayout="row" fxLayoutWrap *ngIf="board.pins">
               <div fxFlex="20"
                 fxLayout="row"
                 fxLayoutAlign="start center"
@@ -56,6 +56,8 @@
               </div>
           </div>
   </mat-card-content>
+  </div>
+
 </mat-card>
 <mat-card>
     <button (click)="runCode()">Run code</button>

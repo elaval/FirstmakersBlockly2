@@ -82,8 +82,10 @@ export class BlocklyComponent implements OnInit {
 
     };
 
-    function updateCode() {
-      this.blocklyService.newCodeJavascript(Blockly.JavaScript.workspaceToCode(editor));
+    const updateCode = () => {
+      if (editor) {
+        this.blocklyService.newCodeJavascript(Blockly.JavaScript.workspaceToCode(editor));
+      }
       // document.getElementById('js').innerText = Blockly.JavaScript.workspaceToCode(editor);
       // document.getElementById('php').innerText = Blockly.PHP.workspaceToCode(editor);
       // document.getElementById('lua').innerText = Blockly.Lua.workspaceToCode(editor);
