@@ -6,6 +6,8 @@ import { LocalIpService } from './services/local-ip.service';
 import * as io from 'socket.io-client';
 import { JavascriptInterpreterService } from './blockly/javascript-interpreter.service';
 import {TranslateService} from '@ngx-translate/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { SettingsComponent } from './settings/settings.component';
 
 @Component({
   selector: 'app-root',
@@ -35,7 +37,8 @@ export class AppComponent {
     private blocklyService: BlocklyService,
     private javascriptInterpreterService: JavascriptInterpreterService,
     private translate: TranslateService,
-    private zone: NgZone
+    private zone: NgZone,
+    private dialog: MatDialog
   ) {
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
@@ -94,5 +97,14 @@ export class AppComponent {
 
   scanLocalNetwork(localIP) {
     alert(localIP);
+  }
+
+  openSettingsDialog() {
+    this.dialog.open(SettingsComponent, {
+      height: '400px',
+      width: '600px',
+    });
+
+
   }
 }

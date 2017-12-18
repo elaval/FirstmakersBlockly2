@@ -1,0 +1,14 @@
+
+
+<h2 mat-dialog-title>Settings</h2>
+<mat-dialog-content>
+    <mat-form-field class="example-full-width">
+
+        <input matInput placeholder="Local IP address" [(ngModel)]="localIP" (change)="scanLocalNetwork(localIP)">
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>No</button>
+  <!-- Can optionally provide a result for the closing dialog. -->
+  <button mat-button [mat-dialog-close]="true">Yes</button>
+</mat-dialog-actions>

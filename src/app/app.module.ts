@@ -12,13 +12,15 @@ import {
   MatToolbarModule,
   MatCardModule,
   MatSlideToggleModule,
-  MatInputModule
+  MatInputModule,
+  MatDialogModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BoardAgentModule } from './board-agent/board-agent.module';
 import { LocalIpService } from './services/local-ip.service';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { SettingsComponent } from './settings/settings.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -28,7 +30,13 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
+    SettingsComponent,
   ],
+
+  entryComponents: [
+    SettingsComponent
+  ],
+
   imports: [
     FormsModule,
     BrowserModule,
@@ -39,6 +47,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatCardModule,
     MatSlideToggleModule,
     MatInputModule,
+    MatDialogModule,
     FlexLayoutModule,
     BoardAgentModule,
     BlocklyModule,

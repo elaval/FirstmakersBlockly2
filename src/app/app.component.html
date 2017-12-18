@@ -1,20 +1,19 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <mat-toolbar>
   <span>Firstmakers Blockly Client</span>
+  <span class="example-fill-remaining-space"></span>
+  <span (click)="openSettingsDialog()"><i class="fa fa-cog" aria-hidden="true"></i></span>
+
 </mat-toolbar>
 <mat-card>
-  <mat-form-field class="example-full-width">
-      <input matInput placeholder="Local IP address" [(ngModel)]="localIP" (change)="scanLocalNetwork(localIP)">
-  </mat-form-field>
-  {{checkingHost}}
   <li *ngFor="let device of devices">{{device}}</li>
 </mat-card>
 
-<div fxLayout="row" fxLayoutWrap>
+<div fxLayout="row" fxLayoutWrap fxLayoutGap="10px">
   <div fxFlex="60">
     <mat-card>
-        <button (click)="runCode()">Run code</button>
-        <button (click)="stopCode()">Stop code</button>
+        <button mat-button (click)="runCode()"><i class="fa fa-play" aria-hidden="true"></i></button>
+        <button mat-icon-button (click)="stopCode()"><i class="fa fa-stop" aria-hidden="true"></i></button>
         <app-blockly></app-blockly>
         <div>
           {{javascriptCode}}
